@@ -11,6 +11,6 @@ class Event extends Model
     use HasFactory;
     public function workshops()
     {
-        return $this->hasMany(Workshop::class);
+        return $this->hasMany(Workshop::class, 'event_id', 'id');
     }
 }

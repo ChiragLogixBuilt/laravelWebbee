@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Date;
+use DB;
 
 class EventsController extends BaseController
 {
@@ -178,6 +179,41 @@ class EventsController extends BaseController
      */
 
     public function getFutureEventsWithWorkshops() {
+
+        $date = date('Y-m-d H:i:s', strtotime('2021-07-21'));
+        // echo $date;exit;
+
+        // $items = Event::select('events.id')->with(['workshops' => function($query) use ($date) {
+        //     $query->where('workshops.start', '>', $date);
+        // }])
+        // ->get();
+
+        $items = Event::with('workshops')->whereHas('workshops',function($query)use($date){
+            $query->where('start', '>', $date);
+        })->get();
+        // echo count($items);exit;
+
+        // echo "<pre>";
+        // print_r($items);
+
+            // $items = DB::table('events')
+            // ->select('DISTINCT (workshops.event_id)', 'events.*')
+            // ->join('workshops','workshops.event_id','=','events.id')
+            // ->where('workshops.start', '>', $date)
+            // ->groupBy('workshops.event_id')
+            // ->get();
+
+            
+
+            // echo count($items);exit;
+
+        // $items = Event::whereDate('start', $date)->with('workshops')->get();
+        // echo "<pre>";
+        // print_r($items);
+        // exit;
+
+
+        return json_encode($items);
         throw new \Exception('implement in coding task 2');
     }
 }

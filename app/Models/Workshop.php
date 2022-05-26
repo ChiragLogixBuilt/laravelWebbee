@@ -11,6 +11,6 @@ class Workshop extends Model
 {
     public function events()
     {
-        return $this->belongsTo(Event::class);
+        return $this->belongsTo(Event::class, 'id', 'event_id');
     }
 }
